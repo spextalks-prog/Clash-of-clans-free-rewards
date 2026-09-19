@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Rewards Demo</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top,#4338ca,transparent 45%),
+        linear-gradient(135deg,#020617,#111827);
+    color:white;
+}
+
+.topbar{
+    position:fixed;
+    top:0;
+    right:0;
+    padding:15px;
+    z-index:10;
+}
+
+.settings-btn{
+    width:auto;
+    margin:0;
+    padding:10px 15px;
+    background:rgba(255,255,255,.12);
+}
+
+.container{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:70px 15px 25px;
+}
+
+.card{
+    width:100%;
+    max-width:430px;
+    padding:30px;
+    border-radius:25px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+    text-align:center;
+    backdrop-filter:blur(12px);
+}
+
+.logo{
+    font-size:58px;
+}
+
+h1{
+    margin:8px 0 25px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin:8px 0;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    background:#6366f1;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#4f46e5;
+}
+
+.secondary{
+    background:rgba(255,255,255,.12);
+}
+
+.danger{
+    background:#dc2626;
+}
+
+.hidden{
+    display:none!important;
+}
+
+.options{
+    display:flex;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.option{
+    flex:1;
+    padding:25px 10px;
+    border-radius:16px;
+    background:rgba(255,255,255,.08);
+    border:2px solid transparent;
+    cursor:pointer;
+}
+
+.option.selected{
+    border-color:#818cf8;
+    background:rgba(99,102,241,.35);
+}
+
+.icon{
+    font-size:42px;
+}
+
+.result-icon{
+    font-size:65px;
+}
+
+.message{
+    font-size:23px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.sub{
+    margin-top:15px;
+    color:#cbd5e1;
+}
+
+.info{
+    text-align:left;
+    background:rgba(255,255,255,.07);
+    padding:15px;
+    border-radius:15px;
+    margin-top:15px;
+}
+
+.info p{
+    margin:10px 0;
+    word-break:break-word;
+}
+
+.label{
+    color:#a5b4fc;
+    font-weight:bold;
+}
+
+.notice{
+    font-size:13px;
+    color:#cbd5e1;
+    margin-top:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SETTINGS BUTTON -->
+<div class="topbar">
+    <button class="settings-btn" onclick="openSettings()">
+        ⚙️ Settings
+    </button>
+</div>
+
+
+<div class="container">
+<div class="card">
+
+
+<!-- ================= PAGE 1 ================= -->
+
+<div id="page1">
+
+    <div class="logo">🎮</div>
+
+    <h1>Game Rewards</h1>
+
+    <input
+        type="text"
+        id="gameId"
+        placeholder="Enter your Game ID"
+    >
+
+    <input
+        type="email"
+        id="gmail"
+        placeholder="Enter your Gmail"
+    >
+
+    <button onclick="pageTwo()">
+        Continue →
+    </button>
+
+    <div class="notice">
+        Your information is stored only in this browser.
+    </div>
+
+</div>
+
+
+<!-- ================= PAGE 2 ================= -->
+
+<div id="page2" class="hidden">
+
+    <div class="logo">🎁</div>
+
+    <h1>Select Reward</h1>
+
+    <div class="options">
+
+        <div
+            class="option"
+            id="scenery"
+            onclick="chooseReward('scenery')"
+        >
+            <div class="icon">🏰</div>
+            <br>
+            Scenery
+        </div>
+
+        <div
+            class="option"
+            id="hero"
+            onclick="chooseReward('hero')"
+        >
+            <div class="icon">🦸</div>
+            <br>
+            Hero Skin
+        </div>
+
+    </div>
+
+    <input
+        type="text"
+        id="demoCode"
+        placeholder="Enter Demo Code (optional)"
+        autocomplete="off"
+    >
+
+    <button onclick="pageThree()">
+        Continue →
+    </button>
+
+    <div class="notice">
+        Demo Code is stored only in this browser. Do not enter any real account password.
+    </div>
+
+</div>
+
+
+<!-- ================= PAGE 3 ================= -->
+
+<div id="page3" class="hidden">
+
+    <div class="result-icon">⏰</div>
+
+    <div id="result" class="message"></div>
+
+    <div class="sub">
+        Please come back tomorrow.
+    </div>
+
+    <button onclick="goHome()">
+        🏠 Home
+    </button>
+
+</div>
+
+
+<!-- ================= SETTINGS LOGIN ================= -->
+
+<div id="settingsLogin" class="hidden">
+
+    <div class="logo">🔒</div>
+
+    <h1>Settings</h1>
+
+    <p>Enter Settings PIN</p>
+
+    <input
+        type="password"
+        id="settingsPin"
+        placeholder="Settings PIN"
+    >
+
+    <button onclick="unlockSettings()">
+        Unlock
+    </button>
+
+    <button class="secondary" onclick="goHome()">
+        Cancel
+    </button>
+
+</div>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<div id="settingsPage" class="hidden">
+
+    <div class="logo">⚙️</div>
+
+    <h1>Settings</h1>
+
+    <div class="info">
+
+        <p>
+            <span class="label">Game ID:</span><br>
+            <span id="savedGameId">Not saved</span>
+        </p>
+
+        <p>
+            <span class="label">Gmail:</span><br>
+            <span id="savedGmail">Not saved</span>
+        </p>
+
+        <p>
+            <span class="label">Demo Code:</span><br>
+            <span id="savedDemoCode">Not saved</span>
+        </p>
+
+        <p>
+            <span class="label">Reward:</span><br>
+            <span id="savedReward">Not selected</span>
+        </p>
+
+        <p>
+            <span class="label">Status:</span><br>
+            <span id="dataStatus">No saved data</span>
+        </p>
+
+    </div>
+
+    <button class="danger" onclick="clearData()">
+        🗑️ Clear Saved Data
+    </button>
+
+    <button class="secondary" onclick="goHome()">
+        🏠 Back Home
+    </button>
+
+</div>
+
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+const SETTINGS_PIN = "677";
+
+let selectedReward = "";
+
+
+/* =========================================
+   PAGE 1 → PAGE 2
+========================================= */
+
+function pageTwo(){
+
+    const gameId =
+        document.getElementById("gameId").value.trim();
+
+    const gmail =
+        document.getElementById("gmail").value.trim();
+
+    if(gameId === ""){
+        alert("Please enter your Game ID.");
+        return;
+    }
+
+    if(gmail === ""){
+        alert("Please enter your Gmail.");
+        return;
+    }
+
+    /* Save locally */
+    localStorage.setItem("gameId",gameId);
+    localStorage.setItem("gmail",gmail);
+
+    hideAll();
+
+    document.getElementById("page2")
+        .classList.remove("hidden");
+}
+
+
+/* =========================================
+   SELECT REWARD
+========================================= */
+
+function chooseReward(type){
+
+    selectedReward = type;
+
+    document.getElementById("scenery")
+        .classList.remove("selected");
+
+    document.getElementById("hero")
+        .classList.remove("selected");
+
+    if(type === "scenery"){
+
+        document.getElementById("scenery")
+            .classList.add("selected");
+
+    }else{
+
+        document.getElementById("hero")
+            .classList.add("selected");
+    }
+
+    localStorage.setItem("reward",type);
+}
+
+
+/* =========================================
+   PAGE 2 → PAGE 3
+========================================= */
+
+function pageThree(){
+
+    if(selectedReward === ""){
+
+        alert("Please select Scenery or Hero Skin.");
+        return;
+    }
+
+    // Save only the non-sensitive demo code locally.
+    const demoCode =
+        document.getElementById("demoCode").value.trim();
+
+    localStorage.setItem("demoCode", demoCode);
+
+    hideAll();
+
+    document.getElementById("page3")
+        .classList.remove("hidden");
+
+    if(selectedReward === "scenery"){
+
+        document.getElementById("result").innerHTML =
+            "You are late!<br><br>" +
+            "🏰 All Scenery is out of stock.";
+
+    }else{
+
+        document.getElementById("result").innerHTML =
+            "You are late!<br><br>" +
+            "🦸 Hero Skin is out of stock.";
+    }
+}
+
+
+/* =========================================
+   OPEN SETTINGS
+========================================= */
+
+function openSettings(){
+
+    hideAll();
+
+    document.getElementById("settingsLogin")
+        .classList.remove("hidden");
+
+    document.getElementById("settingsPin").value="";
+}
+
+
+/* =========================================
+   UNLOCK SETTINGS
+========================================= */
+
+function unlockSettings(){
+
+    const pin =
+        document.getElementById("settingsPin").value;
+
+    if(pin !== SETTINGS_PIN){
+
+        alert("Incorrect Settings PIN.");
+        return;
+    }
+
+    loadSavedData();
+
+    hideAll();
+
+    document.getElementById("settingsPage")
+        .classList.remove("hidden");
+}
+
+
+/* =========================================
+   LOAD SAVED DATA
+========================================= */
+
+function loadSavedData(){
+
+    const gameId =
+        localStorage.getItem("gameId");
+
+    const gmail =
+        localStorage.getItem("gmail");
+
+    const reward =
+        localStorage.getItem("reward");
+
+    const demoCode =
+        localStorage.getItem("demoCode");
+
+
+    document.getElementById("savedGameId")
+        .textContent = gameId || "Not saved";
+
+    document.getElementById("savedGmail")
+        .textContent = gmail || "Not saved";
+
+    document.getElementById("savedDemoCode")
+        .textContent = demoCode || "Not saved";
+
+
+    if(reward === "scenery"){
+
+        document.getElementById("savedReward")
+            .textContent = "🏰 Scenery";
+
+    }else if(reward === "hero"){
+
+        document.getElementById("savedReward")
+            .textContent = "🦸 Hero Skin";
+
+    }else{
+
+        document.getElementById("savedReward")
+            .textContent = "Not selected";
+    }
+
+
+    if(gameId || gmail || demoCode || reward){
+
+        document.getElementById("dataStatus")
+            .textContent = "💾 Data saved locally";
+
+    }else{
+
+        document.getElementById("dataStatus")
+            .textContent = "No saved data";
+    }
+}
+
+
+/* =========================================
+   CLEAR DATA
+========================================= */
+
+function clearData(){
+
+    if(!confirm(
+        "Are you sure you want to clear all saved data?"
+    )){
+        return;
+    }
+
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("gmail");
+    localStorage.removeItem("demoCode");
+    localStorage.removeItem("reward");
+
+    document.getElementById("gameId").value="";
+    document.getElementById("gmail").value="";
+    document.getElementById("demoCode").value="";
+
+    selectedReward="";
+
+    alert("Saved data cleared.");
+
+    loadSavedData();
+}
+
+
+/* =========================================
+   HOME
+========================================= */
+
+function goHome(){
+
+    hideAll();
+
+    document.getElementById("page1")
+        .classList.remove("hidden");
+
+    loadExistingData();
+}
+
+
+/* =========================================
+   LOAD EXISTING DATA
+========================================= */
+
+function loadExistingData(){
+
+    const gameId =
+        localStorage.getItem("gameId");
+
+    const gmail =
+        localStorage.getItem("gmail");
+
+    const reward =
+        localStorage.getItem("reward");
+
+    const demoCode =
+        localStorage.getItem("demoCode");
+
+
+    if(gameId){
+        document.getElementById("gameId").value=gameId;
+    }
+
+    if(gmail){
+        document.getElementById("gmail").value=gmail;
+    }
+
+    if(demoCode){
+        document.getElementById("demoCode").value=demoCode;
+    }
+
+    if(reward){
+        selectedReward=reward;
+    }
+}
+
+
+/* =========================================
+   HIDE ALL
+========================================= */
+
+function hideAll(){
+
+    document.getElementById("page1")
+        .classList.add("hidden");
+
+    document.getElementById("page2")
+        .classList.add("hidden");
+
+    document.getElementById("page3")
+        .classList.add("hidden");
+
+    document.getElementById("settingsLogin")
+        .classList.add("hidden");
+
+    document.getElementById("settingsPage")
+        .classList.add("hidden");
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+window.onload=function(){
+    loadExistingData();
+};
+
+</script>
+
+</body>
+</html>
